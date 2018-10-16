@@ -5,11 +5,11 @@ pacman::p_load(httr, tidyverse, rvest, janitor)
 grconurl <- "https://www.conservapedia.com/Essay:Greatest_Conservative_Movies"
 woliburl <- "https://www.conservapedia.com/Essay:Worst_Liberal_Movies"
 
-#Læser ind
+#LÃ¦ser ind
 grcon <- read_html(grconurl)
 wolib <- read_html(woliburl)
 
-#Scraper tabel for "Greatest Conservative Movies" og gør til data.frame
+#Scraper tabel for "Greatest Conservative Movies" og gÃ¸r til data.frame
 cons_tables <- html_nodes(grcon, "table")
 cons_dat <- rbind(html_table(cons_tables[[1]], fill = TRUE),
                   html_table(cons_tables[[2]], fill = TRUE),
@@ -18,7 +18,7 @@ cons_dat <- rbind(html_table(cons_tables[[1]], fill = TRUE),
                   html_table(cons_tables[[5]], fill = TRUE)) %>%
   clean_names()
 
-# Tilføjer kolonne til variablen 'cons_dat' og giver værdien 0 til alle konservative film (skal bruges senere)
+# TilfÃ¸jer kolonne til variablen 'cons_dat' og giver vÃ¦rdien 0 til alle konservative film (skal bruges senere)
 cons_dat$political <- rep(0,nrow(cons_dat))
 
 #Scraper liberale film tabeller og binder til data.frame
@@ -32,11 +32,11 @@ lib_dat <- rbind(html_table(lib_tables[[1]], fill = TRUE),
                   html_table(lib_tables[[6]], fill = TRUE)) %>%
   clean_names()
 
-#Tilføjer kolonne og giver alle Liberale Film værdien 1 (skal bruges senere)
+#TilfÃ¸jer kolonne og giver alle Liberale Film vÃ¦rdien 1 (skal bruges senere)
 lib_dat$political <- rep(1, nrow(lib_dat))
 
 
-#Appender de to data.frames, dvs. sammensætter på rækker
+#Appender de to data.frames, dvs. sammensÃ¦tter pÃ¥ rÃ¦kker
 film <- rbind(lib_dat, cons_dat)
 
 
@@ -73,7 +73,7 @@ film %>%
 # T-test
 t.test(film$boxoffice ~ film$political) # p = 0.0942, diff. er ikke signifikant indenfor konventionel measure
 
-#Kigger på top 5 film
+#Kigger pÃ¥ top 5 film
 film %>% 
   group_by(political) %>%  
   top_n(5, boxoffice)
